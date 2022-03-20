@@ -222,7 +222,7 @@ void ObsListCreateEditDialog::obsListAddObjectButtonPressed()
 		// No duplicate item in the same list
 		bool is_already_in_list = false;
 		QHash<QString,observingListItem>::const_iterator i;
-		for ( i = observingListItemCollection.begin(); i != observingListItemCollection.end(); i++ )
+		for ( i = observingListItemCollection.constBegin(); i != observingListItemCollection.constEnd(); i++ )
 		{
 			if ( i.value().name.compare ( selectedObject[0]->getEnglishName() ) == 0 )
 			{
@@ -279,7 +279,7 @@ void ObsListCreateEditDialog::obsListAddObjectButtonPressed()
 			if ( loc.name.isEmpty() )
 				Location = QString ( "%1, %2" ).arg ( loc.latitude ).arg ( loc.longitude );
 			else
-				Location = QString ( "%1, %2" ).arg ( loc.name ).arg ( loc.region );
+				Location = QString ( "%1, %2" ).arg ( loc.name, loc.region );
 
 			addModelRow ( lastRow,objectUuid,objectName, objectNameI18n, objectType, objectRaStr, objectDecStr, objectMagnitudeStr, objectConstellation );
 
@@ -305,8 +305,11 @@ void ObsListCreateEditDialog::obsListAddObjectButtonPressed()
 				item.jd	= QString::number ( JD, 'f', 6 );
 
 			if ( !Location.isEmpty() )
-				QHash<QString, int>::iterator i;
+			{
+				// FIXME: gcc warned about an indentation problem. I added the brackets here. But what did you intend to do with the iterator?
+				//QHash<QString, int>::iterator i;
 				item.location = Location;
+			}
 
 			if ( !visibleFlag )
 				item.isVisibleMarker = visibleFlag;
@@ -395,7 +398,7 @@ void ObsListCreateEditDialog::saveObservedObject()
 		if ( loc.name.isEmpty() )
 			Location = QString ( "%1, %2" ).arg ( loc.latitude ).arg ( loc.longitude );
 		else
-			Location = QString ( "%1, %2" ).arg ( loc.name ).arg ( loc.region );
+			Location = QString ( "%1, %2" ).arg ( loc.name, loc.region );
 
 		observingListDataList.insert ( QString ( KEY_LOCATION ), Location );
 
@@ -538,7 +541,7 @@ void ObsListCreateEditDialog::obsListExitButtonPressed()
 */
 void ObsListCreateEditDialog::close()
 {
-	this->setVisible ( false );;
+	this->setVisible ( false );
 	emit this->exitButtonClicked();
 }
 
@@ -565,7 +568,7 @@ void ObsListCreateEditDialog::headerClicked ( int index )
 			sorting = QString ( SORTING_BY_MAGNITUDE );
 			break;
 		case ColumnConstellation:
-			sorting = QString ( SORTING_BY_CONSTTELLATION );;
+			sorting = QString ( SORTING_BY_CONSTELLATION );
 			break;
 		default:
 			sorting = "";
@@ -616,7 +619,7 @@ void ObsListCreateEditDialog::loadObservingList()
 				return;
 			}
 
-			for ( QVariant object: listOfObjects )
+			for ( const QVariant &object: qAsConst(listOfObjects) )
 			{
 				QVariantMap objectMap;
 				if ( object.canConvert<QVariantMap>() )
@@ -664,7 +667,7 @@ void ObsListCreateEditDialog::loadObservingList()
 							if ( loc.name.isEmpty() )
 								Location = QString ( "%1, %2" ).arg ( loc.latitude ).arg ( loc.longitude );
 							else
-								Location = QString ( "%1, %2" ).arg ( loc.name ).arg ( loc.region );
+								Location = QString ( "%1, %2" ).arg ( loc.name, loc.region );
 
 							addModelRow ( lastRow,objectUuid,objectName, objectNameI18n, objectType, objectRaStr, objectDecStr, objectMagnitudeStr, objectConstellation );
 

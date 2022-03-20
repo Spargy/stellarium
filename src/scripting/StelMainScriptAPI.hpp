@@ -42,7 +42,7 @@ class StelMainScriptAPI : public QObject
 
 public:
 	StelMainScriptAPI(QObject *parent = Q_NULLPTR);
-	~StelMainScriptAPI();
+	~StelMainScriptAPI() Q_DECL_OVERRIDE;
 
 // These functions will be available in scripts
 public slots:
@@ -762,7 +762,7 @@ public slots:
 	static void pauseScript();
 
 	//! Set the amount of selected object information to display
-	//! @param level can be "AllInfo", "ShortInfo", "None"
+	//! @param level can be "AllInfo", "DefaultInfo", "ShortInfo", "None", "Custom"
 	static void setSelectedObjectInfo(const QString& level);
 
 	//! Stop the script
@@ -880,6 +880,40 @@ public slots:
 	//! Get the current status of media playback support.
 	//! @return The current status of media playback support.
 	static bool isMediaPlaybackSupported(void);
+
+	//! Experimental. Allow setting physical display properties for tonemapping.
+	//! The standard value is 100cd/m^2, appropriate for CRTs. More modern screens often have more.
+	//! Increasing the value makes most of the sky darker, to allow saving the highest tones for the brightest lights (esp. the Sun).
+	//! @note This is experimental and may not be available in later versions.
+	static void setDisplayMaxLuminance(double cdPerSqM);
+	//! Experimental.
+	//! @return configured physical display luminance for tonemapping.
+	//! The standard value is 100cd/m^2, appropriate for CRTs. More modern screens often have more.
+	//! @note This is experimental and may not be available in later versions.
+	static double getDisplayMaxLuminance();
+	//! Experimental. Allow setting physical display adaptation luminance for tonemapping.
+	//! The standard value is 50cd/m^2, appropriate for CRTs in dimly lit office environments.
+	//! TBD true?: Increasing the value makes most of the sky darker, to allow saving the highest tones for the brightest lights (esp. the Sun).
+	//! @note This is experimental and may not be available in later versions.
+	static void setDisplayAdaptationLuminance(double cdPerSqM);
+	//! Experimental.
+	//! @return configured physical display adaptation luminance for tonemapping.
+	//! The standard value is 50cd/m^2, appropriate for CRTs in dimly lit office environments.
+	//! @note This is experimental and may not be available in later versions.
+	static double getDisplayAdaptationLuminance();
+	//! Experimental: Set the display gamma
+	//! @param gamma the gamma. Initial default value is 2.2222 (for a CRT), and
+	//! sRGB LCD (and similar modern) panels try to reproduce that. This method allows overriding for other sky tones.
+	//! Higher gamma makes the sky brighter.
+	//! @note It may be technically an error to deviate from the defaults!
+	//! @note Only the blue-sky (atmosphere) model is influenced, not the foreground (landscape)
+	//! @note This is experimental and may not be available in later versions.
+	static void setDisplayGamma(double gamma);
+	//! Experimental: Get the display gamma. Initial default value is 2.2222 (for a CRT), and
+	//! sRGB LCD (and similar modern) panels try to reproduce that.
+	//! Higher gamma makes the sky brighter.
+	//! @note This is experimental and may not be available in later versions.
+	static double getDisplayGamma();
 
 signals:
 	void requestLoadSkyImage(const QString& id, const QString& filename,

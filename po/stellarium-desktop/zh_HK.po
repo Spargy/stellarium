@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Stellarium desktop file translation\n"
 "Report-Msgid-Bugs-To: stellarium@googlegroups.com\n"
-"POT-Creation-Date: 2021-09-27 22:14+0700\n"
+"POT-Creation-Date: 2022-01-06 17:14+0700\n"
 "PO-Revision-Date: 2017-11-29 01:17+0000\n"
 "Last-Translator: 殳玮 孙 <itun@qq.com>, 2021\n"
 "Language-Team: Chinese (Hong Kong) (https://www.transifex.com/stellarium/teams/80998/zh_HK/)\n"
@@ -42,6 +42,16 @@ msgstr "開啟視窗模式"
 msgctxt "Name"
 msgid "Open in fullscreen"
 msgstr "開啟全螢幕模式"
+
+#: ../../data/org.stellarium.Stellarium.desktop
+msgctxt "Name"
+msgid "Open with QPA platform XCB"
+msgstr ""
+
+#: ../../data/org.stellarium.Stellarium.desktop
+msgctxt "Name"
+msgid "Open with QPA platform theme XCB"
+msgstr ""
 
 #: ../../data/org.stellarium.Stellarium.desktop
 msgctxt "Name"
